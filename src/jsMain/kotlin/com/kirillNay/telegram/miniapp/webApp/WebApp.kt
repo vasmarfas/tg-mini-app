@@ -56,7 +56,7 @@ class WebApp internal constructor(
     val isExpanded: Boolean get() = jsDelegate.isExpanded
 
     /**
-     * he current height of the visible area of the Mini App. Also available in CSS as the variable var(--tg-viewport-height).
+     * The current height of the visible area of the Mini App. Also available in CSS as the variable var(--tg-viewport-height).
      *
      * The application can display just the top part of the Mini App, with its lower part remaining outside the screen area. From this position, the user can “pull” the Mini App to its maximum height, while the bot can do the same by calling the expand() method. As the position of the Mini App changes, the current height value of the visible area will be updated in real time.
      *

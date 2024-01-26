@@ -7,13 +7,19 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
 import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
 import com.kirillNay.telegram.miniapp.compose.theme.ColorsConverter
-import com.kirillNay.telegram.miniapp.compose.theme.ThemeHandler
+import com.kirillNay.telegram.miniapp.compose.theme.TelegramThemeHandler
+import com.kirillNay.telegram.miniapp.webApp.EventType
+import com.kirillNay.telegram.miniapp.webApp.webApp
 import org.jetbrains.skiko.wasm.onWasmReady
 
 /**
@@ -23,7 +29,7 @@ import org.jetbrains.skiko.wasm.onWasmReady
  * Pass custom colorsConverter to provide your own colors based on your design system.
  * It's recommended to create your own colors based on themeParams to provide smooth UX.
  *
- * @param themeHandler handles telegram theme switching (e.g light and dark mode switching).
+ * @param telegramThemeHandler handles telegram theme switching (e.g light and dark mode switching).
  * Pass custom themeHandler in case you have your own logic of theme switching.
  *
  * @param animationDuration defines duration of animation of switching colors.
@@ -33,22 +39,28 @@ import org.jetbrains.skiko.wasm.onWasmReady
  */
 @OptIn(ExperimentalComposeUiApi::class)
 fun telegramWebApp(
-        colorsConverter: ColorsConverter = ColorsConverter.Default(),
-        themeHandler: ThemeHandler = ThemeHandler.Default(colorsConverter),
-        typography: Typography? = null,
-        shapes: Shapes? = null,
-        animationDuration: Int = 0,
-        content: @Composable () -> Unit
+    colorsConverter: ColorsConverter = ColorsConverter.Default(),
+    telegramThemeHandler: TelegramThemeHandler = TelegramThemeHandler.Default(colorsConverter),
+    typography: Typography? = null,
+    shapes: Shapes? = null,
+    animationDuration: Int = 0,
+    content: @Composable (ViewPortValues) -> Unit
 ) {
     onWasmReady {
         CanvasBasedWindow {
-            val colors by themeHandler.colors.collectAsState()
+            var paddings by remember { mutableStateOf(ViewPortValues(webApp.viewportHeight.dp, webApp.viewportStableHeight.dp)) }
+
+            LaunchedEffect(true) {
+                webApp.addEventHandler(EventType.VIEWPORT_CHANGED) {
+                    paddings = ViewPortValues(webApp.viewportHeight.dp, webApp.viewportStableHeight.dp)
+                }
+            }
 
             MaterialTheme(
-                    colors = if (animationDuration == 0) colors else colors.switch(animationDuration),
+                    colors = if (animationDuration == 0) telegramThemeHandler.colors else telegramThemeHandler.colors.switch(animationDuration),
                     typography = typography ?: MaterialTheme.typography,
                     shapes = shapes ?: MaterialTheme.shapes,
-                    content = content
+                    content = { content(paddings) }
             )
         }
     }
