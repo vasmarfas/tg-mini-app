@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.kirillNay"
-version = "1.0.1"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
@@ -30,7 +30,6 @@ kotlin {
             dependencies {
                 api(compose.runtime)
                 api(compose.foundation)
-                api(compose.material)
                 api(compose.ui)
             }
         }

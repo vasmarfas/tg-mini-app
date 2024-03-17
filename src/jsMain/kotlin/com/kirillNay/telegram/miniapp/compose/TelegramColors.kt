@@ -1,4 +1,4 @@
-package com.kirillNay.telegram.miniapp.compose.theme
+package com.kirillNay.telegram.miniapp.compose
 
 import androidx.compose.ui.graphics.Color
 import com.kirillNay.telegram.miniapp.webApp.webApp
