@@ -10,7 +10,7 @@ Library for creating telegram [mini apps](https://core.telegram.org/bots/webapps
 ```
 3. Add implementation for `jsMain` `tg-mini-app` library:
 ```
-implementation("io.github.kirill:tg-mini-app:1.0.0")
+implementation("io.github.kirillNay:tg-mini-app:1.0.0")
 ```
 4. In `main` funtion of `jsMain` call `telegramWebApp` with providing Composable content:
 ```
