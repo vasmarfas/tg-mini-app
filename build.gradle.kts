@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
@@ -26,11 +28,13 @@ allprojects {
 }
 
 kotlin {
-    js(IR) {
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
         moduleName = "mini-app"
         browser()
         binaries.executable()
     }
+
     sourceSets {
         jsMain.dependencies {
             api(compose.runtime)
