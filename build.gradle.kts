@@ -5,6 +5,10 @@ plugins {
 
     id("convention.publication")
 }
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
 group = "io.github.kirillNay"
 version = "1.2.0"
