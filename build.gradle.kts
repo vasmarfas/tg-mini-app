@@ -28,11 +28,14 @@ allprojects {
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
+    js(IR) {
         moduleName = "mini-app"
         browser()
         binaries.executable()
+        nodejs {
+            version = "16.20.2" // Совместимая версия для GLIBC 2.23 (Ubuntu 16.04)
+
+        }
     }
 
     sourceSets {
